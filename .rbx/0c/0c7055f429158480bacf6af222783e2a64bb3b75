@@ -1,0 +1,977 @@
+!RBIX
+9595534255132031488
+x
+M
+1
+n
+n
+x
+10
+__script__
+i
+37
+5
+7
+0
+64
+47
+49
+1
+1
+15
+5
+7
+2
+64
+44
+43
+3
+79
+49
+4
+1
+13
+7
+5
+2
+49
+6
+2
+15
+56
+7
+47
+50
+8
+2
+15
+2
+11
+I
+6
+I
+0
+I
+0
+I
+0
+n
+p
+9
+s
+11
+spec_helper
+x
+7
+require
+s
+20
+real world edgecases
+x
+4
+Hash
+x
+16
+new_from_literal
+x
+9
+realworld
+x
+3
+[]=
+M
+1
+p
+2
+x
+9
+for_block
+t
+n
+x
+9
+__block__
+i
+72
+5
+7
+0
+64
+44
+43
+1
+79
+49
+2
+1
+13
+7
+3
+7
+4
+64
+49
+5
+2
+15
+56
+6
+47
+50
+7
+2
+15
+5
+7
+8
+64
+56
+9
+47
+50
+7
+1
+15
+5
+7
+10
+64
+56
+11
+47
+50
+7
+1
+15
+5
+7
+12
+64
+56
+13
+47
+50
+7
+1
+15
+5
+7
+14
+64
+56
+15
+47
+50
+7
+1
+11
+I
+7
+I
+0
+I
+0
+I
+0
+I
+-2
+p
+16
+s
+37
+ignores extra gems with bad platforms
+x
+4
+Hash
+x
+16
+new_from_literal
+x
+4
+ruby
+s
+3
+1.8
+x
+3
+[]=
+M
+1
+p
+2
+x
+9
+for_block
+t
+n
+x
+9
+__block__
+i
+24
+5
+7
+0
+64
+47
+49
+1
+1
+15
+5
+48
+2
+5
+7
+3
+64
+47
+49
+4
+1
+49
+5
+1
+11
+I
+4
+I
+0
+I
+0
+I
+0
+I
+-2
+p
+6
+s
+53
+      source :rubygems
+      gem "linecache", "0.46"
+
+x
+15
+install_gemfile
+x
+3
+err
+s
+0
+
+x
+2
+eq
+x
+6
+should
+p
+5
+I
+0
+I
+6
+I
+9
+I
+a
+I
+18
+x
+96
+/Users/jhbabon/.rbenv/versions/rbx-1.2.4/1.8/gems/bundler-1.2.0/spec/realworld/edgecases_spec.rb
+p
+0
+x
+2
+it
+s
+51
+bundle cache works with rubygems 1.3.7 and pre gems
+M
+1
+p
+2
+x
+9
+for_block
+t
+n
+x
+9
+__block__
+i
+32
+5
+7
+0
+64
+47
+49
+1
+1
+15
+5
+7
+2
+47
+49
+3
+1
+15
+5
+48
+4
+5
+7
+5
+64
+47
+49
+6
+1
+49
+7
+1
+11
+I
+4
+I
+0
+I
+0
+I
+0
+I
+-2
+p
+8
+s
+102
+      source :rubygems
+      gem "rack",          "1.3.0.beta2"
+      gem "will_paginate", "3.0.pre2"
+
+x
+15
+install_gemfile
+x
+5
+cache
+x
+6
+bundle
+x
+3
+out
+s
+46
+Removing outdated .gem files from vendor/cache
+x
+7
+include
+x
+10
+should_not
+p
+7
+I
+0
+I
+f
+I
+9
+I
+14
+I
+11
+I
+15
+I
+20
+x
+96
+/Users/jhbabon/.rbenv/versions/rbx-1.2.4/1.8/gems/bundler-1.2.0/spec/realworld/edgecases_spec.rb
+p
+0
+s
+32
+finds the correct child versions
+M
+1
+p
+2
+x
+9
+for_block
+t
+n
+x
+9
+__block__
+i
+24
+5
+7
+0
+64
+47
+49
+1
+1
+15
+5
+48
+2
+5
+7
+3
+64
+47
+49
+4
+1
+49
+5
+1
+11
+I
+4
+I
+0
+I
+0
+I
+0
+I
+-2
+p
+6
+s
+154
+      source :rubygems
+
+      gem 'i18n', '~> 0.4'
+      gem 'activesupport', '~> 3.0'
+      gem 'activerecord', '~> 3.0'
+      gem 'builder', '~> 2.1.2'
+
+x
+15
+install_gemfile
+x
+3
+out
+s
+19
+activemodel (3.0.5)
+x
+7
+include
+x
+6
+should
+p
+5
+I
+0
+I
+1b
+I
+9
+I
+23
+I
+18
+x
+96
+/Users/jhbabon/.rbenv/versions/rbx-1.2.4/1.8/gems/bundler-1.2.0/spec/realworld/edgecases_spec.rb
+p
+0
+s
+44
+does not fail install because of gem plugins
+M
+1
+p
+2
+x
+9
+for_block
+t
+n
+x
+9
+__block__
+i
+70
+5
+7
+0
+64
+7
+1
+64
+47
+49
+2
+2
+15
+5
+7
+3
+64
+47
+49
+4
+1
+15
+5
+7
+5
+64
+44
+43
+6
+79
+49
+7
+1
+13
+7
+8
+2
+49
+9
+2
+15
+47
+49
+10
+2
+15
+5
+48
+11
+5
+7
+12
+64
+47
+49
+13
+1
+49
+14
+1
+15
+5
+48
+11
+5
+48
+15
+49
+16
+1
+11
+I
+7
+I
+0
+I
+0
+I
+0
+I
+-2
+p
+17
+s
+24
+open_gem --version 1.4.2
+s
+20
+rake --version 0.9.2
+x
+21
+realworld_system_gems
+s
+50
+      source :rubygems
+
+      gem 'rack', '1.0.0'
+
+x
+7
+gemfile
+s
+28
+install --path vendor/bundle
+x
+4
+Hash
+x
+16
+new_from_literal
+x
+10
+expect_err
+x
+3
+[]=
+x
+6
+bundle
+x
+3
+err
+s
+19
+Could not find rake
+x
+7
+include
+x
+10
+should_not
+x
+8
+be_empty
+x
+6
+should
+p
+11
+I
+0
+I
+28
+I
+c
+I
+29
+I
+15
+I
+2f
+I
+2d
+I
+30
+I
+3c
+I
+31
+I
+46
+x
+96
+/Users/jhbabon/.rbenv/versions/rbx-1.2.4/1.8/gems/bundler-1.2.0/spec/realworld/edgecases_spec.rb
+p
+0
+s
+51
+checks out git repos when the lockfile is corrupted
+M
+1
+p
+2
+x
+9
+for_block
+t
+n
+x
+9
+__block__
+i
+51
+5
+7
+0
+64
+47
+49
+1
+1
+15
+5
+7
+2
+64
+47
+49
+3
+1
+15
+5
+7
+4
+44
+43
+5
+79
+49
+6
+1
+13
+7
+7
+2
+49
+8
+2
+15
+47
+49
+9
+2
+15
+5
+48
+7
+49
+10
+0
+78
+83
+11
+11
+I
+7
+I
+0
+I
+0
+I
+0
+I
+-2
+p
+12
+s
+291
+      source :rubygems
+
+      gem 'activerecord',  :github => 'carlhuda/rails-bundler-test', :branch => 'master'
+      gem 'activesupport', :github => 'carlhuda/rails-bundler-test', :branch => 'master'
+      gem 'actionpack',    :github => 'carlhuda/rails-bundler-test', :branch => 'master'
+
+x
+7
+gemfile
+s
+3158
+      GIT
+        remote: git://github.com/carlhuda/rails-bundler-test.git
+        revision: 369e28a87419565f1940815219ea9200474589d4
+        branch: master
+        specs:
+          actionpack (3.2.2)
+            activemodel (= 3.2.2)
+            activesupport (= 3.2.2)
+            builder (~> 3.0.0)
+            erubis (~> 2.7.0)
+            journey (~> 1.0.1)
+            rack (~> 1.4.0)
+            rack-cache (~> 1.2)
+            rack-test (~> 0.6.1)
+            sprockets (~> 2.1.2)
+          activemodel (3.2.2)
+            activesupport (= 3.2.2)
+            builder (~> 3.0.0)
+          activerecord (3.2.2)
+            activemodel (= 3.2.2)
+            activesupport (= 3.2.2)
+            arel (~> 3.0.2)
+            tzinfo (~> 0.3.29)
+          activesupport (3.2.2)
+            i18n (~> 0.6)
+            multi_json (~> 1.0)
+
+      GIT
+        remote: git://github.com/carlhuda/rails-bundler-test.git
+        revision: 369e28a87419565f1940815219ea9200474589d4
+        branch: master
+        specs:
+          actionpack (3.2.2)
+            activemodel (= 3.2.2)
+            activesupport (= 3.2.2)
+            builder (~> 3.0.0)
+            erubis (~> 2.7.0)
+            journey (~> 1.0.1)
+            rack (~> 1.4.0)
+            rack-cache (~> 1.2)
+            rack-test (~> 0.6.1)
+            sprockets (~> 2.1.2)
+          activemodel (3.2.2)
+            activesupport (= 3.2.2)
+            builder (~> 3.0.0)
+          activerecord (3.2.2)
+            activemodel (= 3.2.2)
+            activesupport (= 3.2.2)
+            arel (~> 3.0.2)
+            tzinfo (~> 0.3.29)
+          activesupport (3.2.2)
+            i18n (~> 0.6)
+            multi_json (~> 1.0)
+
+      GIT
+        remote: git://github.com/carlhuda/rails-bundler-test.git
+        revision: 369e28a87419565f1940815219ea9200474589d4
+        branch: master
+        specs:
+          actionpack (3.2.2)
+            activemodel (= 3.2.2)
+            activesupport (= 3.2.2)
+            builder (~> 3.0.0)
+            erubis (~> 2.7.0)
+            journey (~> 1.0.1)
+            rack (~> 1.4.0)
+            rack-cache (~> 1.2)
+            rack-test (~> 0.6.1)
+            sprockets (~> 2.1.2)
+          activemodel (3.2.2)
+            activesupport (= 3.2.2)
+            builder (~> 3.0.0)
+          activerecord (3.2.2)
+            activemodel (= 3.2.2)
+            activesupport (= 3.2.2)
+            arel (~> 3.0.2)
+            tzinfo (~> 0.3.29)
+          activesupport (3.2.2)
+            i18n (~> 0.6)
+            multi_json (~> 1.0)
+
+      GEM
+        remote: http://rubygems.org/
+        specs:
+          arel (3.0.2)
+          builder (3.0.0)
+          erubis (2.7.0)
+          hike (1.2.1)
+          i18n (0.6.0)
+          journey (1.0.3)
+          multi_json (1.1.0)
+          rack (1.4.1)
+          rack-cache (1.2)
+            rack (>= 0.4)
+          rack-test (0.6.1)
+            rack (>= 1.0)
+          sprockets (2.1.2)
+            hike (~> 1.2)
+            rack (~> 1.0)
+            tilt (~> 1.1, != 1.3.0)
+          tilt (1.3.3)
+          tzinfo (0.3.32)
+
+      PLATFORMS
+        ruby
+
+      DEPENDENCIES
+        actionpack!
+        activerecord!
+        activesupport!
+
+x
+8
+lockfile
+x
+7
+install
+x
+4
+Hash
+x
+16
+new_from_literal
+x
+10
+exitstatus
+x
+3
+[]=
+x
+6
+bundle
+x
+6
+should
+x
+2
+==
+p
+9
+I
+0
+I
+35
+I
+9
+I
+3d
+I
+12
+I
+ae
+I
+29
+I
+af
+I
+33
+x
+96
+/Users/jhbabon/.rbenv/versions/rbx-1.2.4/1.8/gems/bundler-1.2.0/spec/realworld/edgecases_spec.rb
+p
+0
+p
+11
+I
+0
+I
+5
+I
+1c
+I
+e
+I
+27
+I
+1a
+I
+32
+I
+27
+I
+3d
+I
+34
+I
+48
+x
+96
+/Users/jhbabon/.rbenv/versions/rbx-1.2.4/1.8/gems/bundler-1.2.0/spec/realworld/edgecases_spec.rb
+p
+0
+x
+8
+describe
+p
+5
+I
+0
+I
+1
+I
+9
+I
+3
+I
+25
+x
+96
+/Users/jhbabon/.rbenv/versions/rbx-1.2.4/1.8/gems/bundler-1.2.0/spec/realworld/edgecases_spec.rb
+p
+0
