@@ -1,29 +1,28 @@
 # Shield
 
-TODO: Write a gem description
+Command line script to generate mysql dump with encrypted data.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Install it yourself as:
 
-    gem 'shield'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install shield
+    $ bundle install
+    $ bundle exec rake install
 
 ## Usage
 
-TODO: Write usage instructions here
+To see all the options execute:
 
-## Contributing
+    $ shield help
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+To generate a new dump, use the following command:
+
+    $ shield dump mysql://root@localhost/db_production --type=development > development_dump.sql
+
+This command dumps the `database_url` following the steps defined in the `type`
+option (defaults to `development`). The default dump output is STDOUT.
+
+The `database_url` must have one of the following formats:
+
+    mysql://user:password@host/database
+    mysql://user@host/database
