@@ -1,51 +1,58 @@
 # encoding: utf-8
 
-require 'tempfile'
-require 'optparse'
 require 'mysql2'
 require 'sequel'
 require 'my_obfuscate'
 
-module Shield
+class Shield
+  require 'shield/hooks'
+
   class Dump
-    def initialize(arguments)
-      @options = parse(arguments)
-      @hooks = Hash.new { |h, k| h[k] = proc { |row| row } }
-      # Sequel.extension(:schema_dumper, :migration)
+    def initialize(type, database_url)
+      @db    = connect_to_db(database_url)
+      @hooks = hooks_for(type)
     end
 
-    def parse(arguments = [])
-      options = {}
-      parser = OptionParser.new do |opts|
-        opts.banner = "Usage: #{File.basename($0)} dump [OPTIONS] <origin_database_url>"
+    def connect_to_db(database_url)
+      Sequel.connect(database_url.gsub(/^mysql:/, 'mysql2:'))
+    end
+    protected :connect_to_db
 
-        # TODO: options!
-        # opts.on('--hooks a,b,c', Array, 'List of hooks to use')
-
-        options[:origin_db_url] = arguments.shift.gsub(/^mysql:\/\//, 'mysql2://')
+    def hooks_for(type)
+      hooks = Hash.new { |h, k| h[k] = lambda { :keep } }
+      dump_types[type.to_sym].reduce(hooks) do |acc, table|
+        hook = Shield::Hooks::const_get(Thor::Util.camel_case(table.to_s))
+        acc[table] = hook.new(type)
+        acc
       end
-
-      parser.parse!(arguments)
-      options
     end
+    protected :hooks_for
+
+    def dump_types
+      {
+        development: [:users, :credit_cards, :billing_addresses]
+      }
+    end
+    protected :dump_types
 
     def run
-      tmp = tempfile do |tmp|
-        dump_data(origin_db.opts, tmp)
+      tempfile do |tmp|
+        dump_data(@db.opts, tmp)
         obfuscate_data(tmp)
       end
-    ensure
-      tmp.unlink if tmp
     end
     alias call run
 
     def tempfile(&block)
-      Tempfile.open(['original_dump', 'sql']) do |tmp|
+      tmp = Tempfile.open(['original_dump', 'sql']) do |tmp|
         block.call(tmp)
+        tmp
       end
+    ensure
+      tmp.unlink if tmp
     end
 
-    def dump_data(db, tmp)
+    def dump_data(db, file)
       dump_options = %w(-c
                         --add-drop-table
                         --add-locks
@@ -60,7 +67,7 @@ module Shield
       dump_options << " -p#{db[:password]}" if db[:password]
       dump_options << " #{db[:database]}"
 
-      dump_cmd(dump_options, tmp)
+      dump_cmd(dump_options, file)
     end
 
     def dump_cmd(options, file)
@@ -68,27 +75,16 @@ module Shield
     end
 
     def obfuscate_data(tmp)
-      definitions = table_definitions
-      definitions.merge!(:users => {
-        :email    => { :type => :email, :skip_regexes => [/^[\w\.\_]+@wuaki\.tv$/i] },
-        :username => :first_name
-      })
-
-      obfuscator = MyObfuscate.new(definitions)
-      # obfuscator.fail_on_unspecified_columns = true # if you want it to require every column in the table to be in the above definition
-      obfuscator.globally_kept_columns = %w[id created_at updated_at] # if you set fail_on_unspecified_columns, you may want this as well
+      obfuscator = MyObfuscate.new(table_definitions)
+      obfuscator.globally_kept_columns = %w(id created_at updated_at)
       obfuscator.obfuscate(tmp, $stdout)
     end
 
     def table_definitions
-      origin_db.tables.reduce({}) do |acc, table|
-        acc[table] = :keep
+      @db.tables.reduce({}) do |acc, table|
+        acc[table] = @hooks[table].call
         acc
       end
-    end
-
-    def origin_db
-      @origin_db ||= Sequel.connect(@options[:origin_db_url], :max_connections => 5)
     end
   end
 end

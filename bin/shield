@@ -3,4 +3,4 @@
 $:.unshift File.dirname(__FILE__) + '/../lib'
 require 'shield'
 
-Shield.run(ARGV.dup)
+Shield.start(ARGV.dup)
