@@ -19,7 +19,7 @@ module Shield
 Options
 =======
 help      Show this help message
-dump      Dump a mysql database with sensitive data encrypted
+dump      Dump a mysql database with sensitive data obfuscated
 version   Show version
 
 Add '-h' to any command to see their usage

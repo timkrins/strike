@@ -1,101 +1,94 @@
 # encoding: utf-8
 
+require 'tempfile'
 require 'optparse'
 require 'mysql2'
-# require 'sqlite3'
 require 'sequel'
+require 'my_obfuscate'
 
 module Shield
   class Dump
     def initialize(arguments)
       @options = parse(arguments)
       @hooks = Hash.new { |h, k| h[k] = proc { |row| row } }
-      Sequel.extension(:schema_dumper, :migration)
+      # Sequel.extension(:schema_dumper, :migration)
     end
 
     def parse(arguments = [])
       options = {}
       parser = OptionParser.new do |opts|
-        opts.banner = "Usage: #{File.basename($0)} dump [OPTIONS] <origin_database_url> [playground_database_url]"
+        opts.banner = "Usage: #{File.basename($0)} dump [OPTIONS] <origin_database_url>"
 
         # TODO: options!
         # opts.on('--hooks a,b,c', Array, 'List of hooks to use')
 
-        options[:origin_db_url]     = arguments.shift.gsub(/^mysql:\/\//, 'mysql2://')
-        options[:playground_db_url] = arguments.shift || 'mysql2://root@localhost/shield'
+        options[:origin_db_url] = arguments.shift.gsub(/^mysql:\/\//, 'mysql2://')
       end
 
       parser.parse!(arguments)
       options
     end
-    protected :parse
 
     def run
-      dump_schema
-      dump_data
-      # dump_indexes
-      # reset_sequences
-      # clean_up
+      tmp = tempfile do |tmp|
+        dump_data(origin_db.opts, tmp)
+        obfuscate_data(tmp)
+      end
+    ensure
+      tmp.unlink if tmp
     end
     alias call run
 
-    def dump_schema
-      $stdout.puts "Dump schema"
-      schema = origin_db.dump_schema_migration(:indexes => false)
-      migration = eval(schema)
-      begin
-        migration.apply(playground_db, :down)
-      rescue
-        $stdout.puts "Small error in migration#down"
+    def tempfile(&block)
+      Tempfile.open(['original_dump', 'sql']) do |tmp|
+        block.call(tmp)
       end
-      migration.apply(playground_db, :up)
-      $stdout.puts playground_db.tables.inspect
     end
 
-    def dump_data
-      $stdout.puts "Dump data"
-      threads = []
-      origin_db.tables.each do |table|
-        threads << Thread.new { dump_data_table(table) }
+    def dump_data(db, tmp)
+      dump_options = %w(-c
+                        --add-drop-table
+                        --add-locks
+                        --single-transaction
+                        --set-charset
+                        --create-options
+                        --disable-keys
+                        --quick).join(' ')
+      dump_options << " -u #{db[:user]}" if db[:user]
+      dump_options << " -h #{db[:host]}" if db[:host]
+      dump_options << " -P #{db[:port]}" if db[:port]
+      dump_options << " -p#{db[:password]}" if db[:password]
+      dump_options << " #{db[:database]}"
+
+      dump_cmd(dump_options, tmp)
+    end
+
+    def dump_cmd(options, file)
+      `mysqldump #{options} > #{file.path}`
+    end
+
+    def obfuscate_data(tmp)
+      definitions = table_definitions
+      definitions.merge!(:users => {
+        :email    => { :type => :email, :skip_regexes => [/^[\w\.\_]+@wuaki\.tv$/i] },
+        :username => :first_name
+      })
+
+      obfuscator = MyObfuscate.new(definitions)
+      # obfuscator.fail_on_unspecified_columns = true # if you want it to require every column in the table to be in the above definition
+      obfuscator.globally_kept_columns = %w[id created_at updated_at] # if you set fail_on_unspecified_columns, you may want this as well
+      obfuscator.obfuscate(tmp, $stdout)
+    end
+
+    def table_definitions
+      origin_db.tables.reduce({}) do |acc, table|
+        acc[table] = :keep
+        acc
       end
-      loop { break unless threads.any?(&:alive?) }
-    end
-
-    def dump_data_table(table, limit = 1000)
-      origin_table = origin_db[table]
-      playground_table = playground_db[table]
-      offset = 0
-      loop do
-        # $stdout.write '.'
-        data = origin_table.limit(limit, offset)
-        offset += limit
-        break if data.count == 0
-        playground_table.import(data.all) # TODO: add block to encrypt data
-      end
-      $stdout.puts <<-OUT
-      Origin #{table}: #{origin_table.count}
-      Playground #{table}: #{playground_table.count}
-      OUT
-    end
-
-    def dump_indexes
-      $stdout.puts "TODO: Dump indexes"
-    end
-
-    def reset_sequences
-      $stdout.puts "TODO: Dump sequences"
-    end
-
-    def clean_up
-      $stdout.puts "TODO: Clean up"
     end
 
     def origin_db
       @origin_db ||= Sequel.connect(@options[:origin_db_url], :max_connections => 5)
-    end
-
-    def playground_db
-      @playground_db ||= Sequel.connect(@options[:playground_db_url])
     end
   end
 end
