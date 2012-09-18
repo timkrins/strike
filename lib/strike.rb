@@ -41,8 +41,8 @@ class Strike < Thor
     \x5\t# tables.rb
     \x5\ttable :users do |t|
     \x5\t  # t.column_name :obfuscation_type
-    \x5\t  t.name        :first_name
-    \x5\t  t.email       :email
+    \x5\t  t.name          :first_name
+    \x5\t  t.email         :email
     \x5\tend
   DESC
   method_option :profile,
