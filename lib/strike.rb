@@ -46,7 +46,7 @@ class Strike < Thor
   method_option :profile,
                 aliases:   '-p',
                 type:      :string,
-                default:   '.strike.conf',
+                default:   'Strikefile',
                 required:  true,
                 desc:      'Profile with the definitions'
   def dump(database_url)
