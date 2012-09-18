@@ -9,6 +9,11 @@ To install it:
 
     $ gem install strike
 
+Or install it yourself:
+
+    $ bundle install
+    $ bundle exec rake install
+
 ## Usage
 
 To see all the options execute:
