@@ -6,7 +6,8 @@ require 'my_obfuscate'
 
 class Strike
   class Agent
-    def initialize(database_url, tables)
+    def initialize(cli, database_url, tables)
+      @cli    = cli
       @db     = connect_to_db(database_url)
       @tables = tables
     end
@@ -16,10 +17,10 @@ class Strike
     end
     protected :connect_to_db
 
-    def call
+    def call(output = $stdout)
       tempfile do |file|
         dump_data(@db.opts, file)
-        obfuscate_data(file)
+        obfuscate_data(file, output)
       end
     end
 
@@ -31,6 +32,7 @@ class Strike
     ensure
       tmp.unlink if tmp
     end
+    protected :tempfile
 
     # TODO: support more databases
     def dump_data(db, file)
@@ -48,17 +50,24 @@ class Strike
       dump_options << " -p#{db[:password]}" if db[:password]
       dump_options << " #{db[:database]}"
 
-      dump_cmd(dump_options, file)
+      run dump_cmd(dump_options, file)
     end
 
     def dump_cmd(options, file)
-      `mysqldump #{options} > #{file.path}`
+      "mysqldump #{options} > #{file.path}"
     end
+    protected :dump_cmd
 
-    def obfuscate_data(tmp)
+    def run(cmd)
+      @cli.run cmd, verbose: false, capture: true
+    end
+    protected :run
+
+    def obfuscate_data(input, output)
       obfuscator = MyObfuscate.new(table_definitions)
       obfuscator.globally_kept_columns = %w(id created_at updated_at)
-      obfuscator.obfuscate(tmp, $stdout)
+
+      obfuscator.obfuscate(input, output)
     end
 
     def table_definitions
@@ -67,5 +76,6 @@ class Strike
         acc
       end
     end
+    protected :table_definitions
   end
 end

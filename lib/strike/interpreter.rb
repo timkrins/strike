@@ -14,10 +14,10 @@ class Strike
     # Parse the given profile and generate the tables defined in it.
     #
     # @param [String] profile the profile with the definitions.
-    # @return [Hash] all the tables per interpreted table.
+    # @return [Hash] all the tables defined in the profile.
     def parse(profile)
       instance_eval(profile)
-      tables || []
+      tables
     end
 
     # Define a table and its tables.

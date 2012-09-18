@@ -13,7 +13,7 @@ class Strike::TableTest < MiniTest::Unit::TestCase
     assert @table.test
   end
 
-  def test_should_map_methods_as_keys
+  def test_should_save_method_calls_as_hash
     expected = { name: :test }
     @table.name(:test)
 

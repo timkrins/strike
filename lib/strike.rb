@@ -11,6 +11,8 @@ class Strike < Thor
   require 'strike/interpreter'
   require 'strike/agent'
 
+  include Thor::Actions
+
   desc 'version', 'Show version'
   def version
     $stdout.puts "v#{IO.read(File.expand_path('../../VERSION', __FILE__))}"
@@ -48,17 +50,29 @@ class Strike < Thor
                 type:      :string,
                 default:   'Strikefile',
                 required:  true,
-                desc:      'Profile with the definitions'
+                desc:      'Profile with the table definitions.'
+  method_option :output,
+                aliases:   '-o',
+                type:      :string,
+                required:  false,
+                desc:      'Output file. If none is given, outputs to STDOUT.'
   def dump(database_url)
     file = options[:profile]
 
-    if File.exists?(file)
+    if options[:output]
+      modes  = File::CREAT|File::TRUNC|File::RDWR
+      output = File.new(options[:output], modes, 0644)
+    end
+
+    if file && File.exist?(file)
       File.open(file) do |profile|
         tables = Interpreter.new.parse(profile.read)
-        Agent.new(database_url, tables).call
+        Agent.new(self, database_url, tables).call(output || $stdout)
       end
     else
-      $stdout.puts "No such file #{file}"
+      $stdout.puts "Profile Error: No such file #{file}"
     end
+  ensure
+    output.close if output
   end
 end
