@@ -8,9 +8,9 @@ Gem::Specification.new do |gem|
   gem.homepage      = ''
 
   gem.files         = `git ls-files`.split($\)
-  gem.executables   = ['shield']
+  gem.executables   = ['strike']
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.name          = 'shield'
+  gem.name          = 'strike'
   gem.require_paths = ['lib']
   gem.version       = IO.read(File.expand_path('../VERSION', __FILE__))
 

@@ -7,8 +7,8 @@ Bundler.require(:default)
 require 'tempfile'
 require 'thor'
 
-class Shield < Thor
-  require 'shield/dump'
+class Strike < Thor
+  require 'strike/dump'
 
   desc 'version', 'Show version'
   def version
@@ -28,9 +28,9 @@ class Shield < Thor
 
     Usage example:
 
-      $ shield dump mysql://root@localhost/db_production > development_dump.sql
+      $ strike dump mysql://root@localhost/db_production > development_dump.sql
 
-      $ shield dump mysql://root:secret@localhost/db_production --type=qa > qa_dump.sql
+      $ strike dump mysql://root:secret@localhost/db_production --type=qa > qa_dump.sql
   DESC
   method_option :type,
                 aliases:   '-t',

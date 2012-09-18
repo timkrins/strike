@@ -1,4 +1,4 @@
-# Shield
+# Strike
 
 Command line script to generate mysql dump with encrypted data.
 
@@ -13,11 +13,11 @@ Install it yourself as:
 
 To see all the options execute:
 
-    $ shield help
+    $ strike help
 
 To generate a new dump, use the following command:
 
-    $ shield dump mysql://root@localhost/db_production --type=development > development_dump.sql
+    $ strike dump mysql://root@localhost/db_production --type=development > development_dump.sql
 
 This command dumps the `database_url` following the steps defined in the `type`
 option (defaults to `development`). The default dump output is STDOUT.

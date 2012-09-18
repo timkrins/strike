@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class Shield
+class Strike
   module Hooks
     class BillingAddresses < Struct.new(:dump_type)
       def call

@@ -4,8 +4,8 @@ require 'mysql2'
 require 'sequel'
 require 'my_obfuscate'
 
-class Shield
-  require 'shield/hooks'
+class Strike
+  require 'strike/hooks'
 
   class Dump
     def initialize(type, database_url)
@@ -21,7 +21,7 @@ class Shield
     def hooks_for(type)
       hooks = Hash.new { |h, k| h[k] = lambda { :keep } }
       dump_types[type.to_sym].reduce(hooks) do |acc, table|
-        hook = Shield::Hooks::const_get(Thor::Util.camel_case(table.to_s))
+        hook = Strike::Hooks::const_get(Thor::Util.camel_case(table.to_s))
         acc[table] = hook.new(type)
         acc
       end
