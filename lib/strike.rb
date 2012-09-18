@@ -67,7 +67,7 @@ class Strike < Thor
     if file && File.exist?(file)
       File.open(file) do |profile|
         tables = Interpreter.new.parse(profile.read)
-        Agent.new(self, database_url, tables).call(output || $stdout)
+        Agent.new.call(self, database_url, tables, output || $stdout)
       end
     else
       $stdout.puts "Profile Error: No such file #{file}"
