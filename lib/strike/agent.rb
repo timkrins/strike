@@ -5,12 +5,10 @@ require 'sequel'
 require 'my_obfuscate'
 
 class Strike
-  require 'strike/hooks'
-
-  class Dump
-    def initialize(type, database_url)
-      @db    = connect_to_db(database_url)
-      @hooks = hooks_for(type)
+  class Agent
+    def initialize(database_url, tables)
+      @db     = connect_to_db(database_url)
+      @tables = tables
     end
 
     def connect_to_db(database_url)
@@ -18,35 +16,17 @@ class Strike
     end
     protected :connect_to_db
 
-    def hooks_for(type)
-      hooks = Hash.new { |h, k| h[k] = lambda { :keep } }
-      dump_types[type.to_sym].reduce(hooks) do |acc, table|
-        hook = Strike::Hooks::const_get(Thor::Util.camel_case(table.to_s))
-        acc[table] = hook.new(type)
-        acc
-      end
-    end
-    protected :hooks_for
-
-    def dump_types
-      {
-        development: [:users, :credit_cards, :billing_addresses]
-      }
-    end
-    protected :dump_types
-
-    def run
+    def call
       tempfile do |tmp|
         dump_data(@db.opts, tmp)
         obfuscate_data(tmp)
       end
     end
-    alias call run
 
     def tempfile(&block)
-      tmp = Tempfile.open(['original_dump', 'sql']) do |tmp|
-        block.call(tmp)
-        tmp
+      tmp = Tempfile.open(['original_dump', 'sql']) do |file|
+        block.call(file)
+        file
       end
     ensure
       tmp.unlink if tmp
@@ -82,7 +62,7 @@ class Strike
 
     def table_definitions
       @db.tables.reduce({}) do |acc, table|
-        acc[table] = @hooks[table].call
+        acc[table] = @tables[table].call
         acc
       end
     end

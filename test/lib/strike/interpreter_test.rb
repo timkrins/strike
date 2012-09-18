@@ -25,6 +25,13 @@ class Strike::InterpreterTest < MiniTest::Unit::TestCase
     table_mock.verify
   end
 
+  def test_should_have_default_tables
+    tables = @interpreter.tables
+
+    assert_equal :keep, tables[:test].call
+    assert_equal :keep, tables[:test2].call
+  end
+
   private
 
   def table_source

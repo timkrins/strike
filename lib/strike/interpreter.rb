@@ -8,6 +8,7 @@ class Strike
 
     def initialize(table_source = nil)
       @table_source = table_source
+      @tables ||= Hash.new { |h, k| h[k] = -> { :keep } }
     end
 
     # Parse the given profile and generate the tables defined in it.
@@ -26,7 +27,6 @@ class Strike
     def table(name, &block)
       table = table_source.call(&block)
 
-      @tables ||= {}
       @tables[name.to_sym] = table
     end
 
