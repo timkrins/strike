@@ -67,6 +67,7 @@ end
 
 # Dependencies
 
+* `mysqldump`: to create the dump to manipulate.
 * [my_obfuscate][my_obfuscate]: the core of this utility.
 * [Sequel][sequel]: extracts the info for the non defined tables.
 * [Thor][thor]: cli utilities.
