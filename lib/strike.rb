@@ -19,7 +19,7 @@ class Strike < Thor
   desc 'dump <database_url>', 'Dump the <database_url> to STDOUT.'
   long_desc <<-DESC
     Dump the <database_url> following the table definitions defined in the <profile>
-    (defaults to `.strike.conf`). The default dump output is STDOUT.
+    (defaults to `Strikefile`). The default dump output is STDOUT.
 
     The <database_url> must have one of the following formats:
 
@@ -28,9 +28,9 @@ class Strike < Thor
 
     Usage example:
 
-    $ strike dump mysql://root@localhost/db_production > development_dump.sql
+    $ strike dump mysql://root@localhost/db_production > dump.sql
 
-    $ strike dump mysql://root:secret@localhost/db_production --profile=tables.rb > qa_dump.sql
+    $ strike dump mysql://root:secret@localhost/db_production --profile=tables.rb > dump.sql
 
     The tables are defined with a DSL, which is a wrapper
     arround the obfuscation types defined in the MyObfuscate gem.

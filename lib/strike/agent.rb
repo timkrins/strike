@@ -17,9 +17,9 @@ class Strike
     protected :connect_to_db
 
     def call
-      tempfile do |tmp|
-        dump_data(@db.opts, tmp)
-        obfuscate_data(tmp)
+      tempfile do |file|
+        dump_data(@db.opts, file)
+        obfuscate_data(file)
       end
     end
 
@@ -32,6 +32,7 @@ class Strike
       tmp.unlink if tmp
     end
 
+    # TODO: support more databases
     def dump_data(db, file)
       dump_options = %w(-c
                         --add-drop-table
