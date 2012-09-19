@@ -5,7 +5,7 @@ Gem::Specification.new do |gem|
   gem.email         = ['juan.hernandez@wuaki.tv']
   gem.description   = %q{Dump a mysql database with sensitive data encrypted}
   gem.summary       = %q{Dump a mysql database with sensitive data encrypted}
-  gem.homepage      = ''
+  gem.homepage      = 'https://github.com/wuakitv/strike'
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = ['strike']
