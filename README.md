@@ -22,7 +22,7 @@ To see all the options execute:
 
 To generate a new dump, use the following command:
 
-    $ strike dump mysql://root@localhost/db_production --profile=tables.rb > obfuscate_dump.sql
+    $ strike dump mysql://root@localhost/db_production --profile=tables.rb > obfuscated_dump.sql
 
 This command dumps the `database_url` following the tables defined in the `profile`
 file (defaults to `Strikefile`). The default dump output is STDOUT.
@@ -34,7 +34,7 @@ The `database_url` must have one of the following formats:
 
 It uses the same database url format than [Sequel][sequel].
 
-# Profile file
+## Profile file
 
 The profile file is a ruby file with the definitions of the tables that hold
 the data that needs to be obfuscated or encrypted. The definitions has
@@ -65,18 +65,31 @@ table :movies do |t|
 end
 ```
 
-# Dependencies
+## Dependencies
 
 * `mysqldump`: to create the dump to manipulate.
 * [my_obfuscate][my_obfuscate]: the core of this utility.
 * [Sequel][sequel]: extracts the info for the non defined tables.
 * [Thor][thor]: cli utilities.
 
-# Notes
+## Notes
 
 * It is only 1.9 compliant.
 * Only supports `mysql`.
 
+## Why that name?
+
+Comes from [S.T.R.I.K.E][strike].
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
+
 [my_obfuscate]: https://github.com/jbraeuer/my_obfuscate/
 [sequel]: http://sequel.rubyforge.org/
 [thor]: https://github.com/wycats/thor
+[strike]: http://en.wikipedia.org/wiki/S.T.R.I.K.E

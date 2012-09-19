@@ -1,5 +1,6 @@
 # TODO:
 
-* log info in /var/log/strike/`database`-`timestamp`.log
-* options
+* Log info in /var/log/strike/`database`-`timestamp`.log
+* Options
   - log: alternative log file
+* BETTER TESTS!
