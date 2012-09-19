@@ -65,7 +65,7 @@ class Strike < Thor
         Agent.new.call(self, database_url, tables, output || $stdout)
       end
     else
-      $stdout.puts "Profile Error: No such file #{file}"
+      $stderr.puts "Profile Error: No such file #{file}"
     end
   ensure
     output.close if output
