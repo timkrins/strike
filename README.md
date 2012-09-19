@@ -89,7 +89,7 @@ Comes from [S.T.R.I.K.E][strike].
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-[my_obfuscate]: https://github.com/jbraeuer/my_obfuscate/
+[my_obfuscate]: https://github.com/iterationlabs/my_obfuscate/
 [sequel]: http://sequel.rubyforge.org/
 [thor]: https://github.com/wycats/thor
 [strike]: http://en.wikipedia.org/wiki/S.T.R.I.K.E
