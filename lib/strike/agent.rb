@@ -1,8 +1,6 @@
 # encoding: utf-8
 
-require 'bundler'
-Bundler.require(:default)
-
+require 'tempfile'
 require 'mysql2'
 require 'sequel'
 require 'my_obfuscate'

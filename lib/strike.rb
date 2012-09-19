@@ -1,10 +1,5 @@
 # encoding: utf-8
 
-require 'rubygems'
-require 'bundler'
-Bundler.require(:default)
-
-require 'tempfile'
 require 'thor'
 
 class Strike < Thor
