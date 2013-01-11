@@ -16,8 +16,5 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency 'rake',         '~> 0.9'
   gem.add_runtime_dependency 'my_obfuscate', '~> 0.3.7'
-  gem.add_runtime_dependency 'sequel',       '~> 3.39'
-  gem.add_runtime_dependency 'mysql2',       '~> 0.3.11'
-  gem.add_runtime_dependency 'sqlite3',      '~> 1.3.6'
   gem.add_runtime_dependency 'thor',         '~> 0.16.0'
 end
