@@ -9,6 +9,13 @@ class Strike
       @dumpfile_source = config[:dumpfile_source]
     end
 
+    # Dumps the data from the given database to a tmp file.
+    #
+    # @param [#run] cli the cli program that responds to `#run`.
+    # @param [String] database_url the connection info. @see `#parse_url`.
+    # @param [Proc] optional block in which the tmp file will be used.
+    #
+    # @return [nil]
     def call(cli, database_url)
       tempfile do |file|
         begin
@@ -20,6 +27,22 @@ class Strike
       end
     end
 
+    # Converts a database_url to Hash with all the db data.
+    #
+    # Example:
+    #   parse_url('mysql://user:pass@localhost:100/test_db')
+    #
+    # @param [String] database_url the connection info.
+    #
+    # @return [Hash] the database configuration with the following fields.
+    #                {
+    #                  db_type: String || nil,
+    #                  host: String || nil,
+    #                  port: String || nil,
+    #                  user: String || nil,
+    #                  password: String || nil,
+    #                  database: String || nil,
+    #                }
     def parse_url(database_url)
       uri = URI.parse(database_url)
 
@@ -33,18 +56,33 @@ class Strike
       }
     end
 
+    # Create a tmp file
+    #
+    # @param [Proc] yields the file.
+    #
+    # @return [nil, Tempfile]
     def tempfile
       tmp = dumpfile_source.call(['original_dump', 'sql'])
       block_given? ? yield(tmp) : tmp
     end
     protected :tempfile
 
+    # Tmp file generator
+    #
+    # @return [Proc] a lambda that generates the file.
     def dumpfile_source
       @dumpfile_source ||= Tempfile.public_method(:new)
     end
     protected :dumpfile_source
 
-    # TODO: support more databases
+    # Dump the data from the database configuration and
+    # outputs it to the given file.
+    #
+    # @param [#run] cli the cli program that responds to `#run`.
+    # @param [Hash] db_config database configuration from `#parse_url`.
+    # @param [Tempfile, IO, File] file the file to write the dump.
+    #
+    # @return [nil]
     def dump_data(cli, db_config, file)
       dump_options = %w(-c
                         --add-drop-table
@@ -65,11 +103,18 @@ class Strike
       run cli, dump_cmd(dump_options, file)
     end
 
+    # Dump cli command
     def dump_cmd(options, file)
       "mysqldump #{options} > #{file.path}"
     end
     protected :dump_cmd
 
+    # Run the command with the cli
+    #
+    # @param [#run] cli the cli program that responds to `#run`.
+    # @param [String] cmd the command to run.
+    #
+    # @return [nil]
     def run(cli, cmd)
       cli.run cmd, verbose: false, capture: true
     end
