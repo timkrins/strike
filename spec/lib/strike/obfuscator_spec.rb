@@ -15,7 +15,8 @@ describe Strike::Obfuscator do
   let(:adapter_source) do
     MiniTest::Mock.new.expect(:call, adapter_mock, [tables])
   end
-  let(:obfuscator) { Strike::Obfuscator.new(adapter_source) }
+
+  let(:obfuscator) { Strike::Obfuscator.new(adapter_source: adapter_source) }
 
   subject { obfuscator }
 

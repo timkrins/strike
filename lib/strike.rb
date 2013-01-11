@@ -5,7 +5,7 @@ require 'thor'
 class Strike < Thor
   require 'strike/interpreter'
   require 'strike/obfuscator'
-  require 'strike/agent'
+  require 'strike/dumper'
 
   include Thor::Actions
 
@@ -26,7 +26,7 @@ class Strike < Thor
     $stdout.puts "v#{IO.read(File.expand_path('../../VERSION', __FILE__))}"
   end
 
-  desc 'dump <database_url>', 'Dump the <database_url> to STDOUT.'
+  desc 'dump <database_url>', 'Dump the obfuscated <database_url> to --output.'
   long_desc <<-DESC
     Dump the <database_url> following the table definitions defined in the <profile>
     (defaults to `Strikefile`). The default dump output is STDOUT.
@@ -54,32 +54,22 @@ class Strike < Thor
     \x5\tend
   DESC
   def dump(database_url)
-    file = options[:profile]
-
-    if options[:output]
-      modes  = File::CREAT|File::TRUNC|File::RDWR
-      output = File.new(options[:output], modes, 0644)
-    end
-
-    if file && File.exist?(file)
-      File.open(file) do |profile|
-        tables = Interpreter.new.parse(profile.read)
-        Agent.new.call(self, database_url, tables, output || $stdout)
+    with_profile do |profile|
+      with_output do |output|
+        Dumper.new.call(self, database_url) do |dump_file|
+          _obfuscate(profile, dump_file, output)
+        end
       end
-    else
-      $stderr.puts "Profile Error: No such file #{file}"
     end
-  ensure
-    output.close if output
   end
 
-  desc 'obfuscate', 'Obfuscate a mysqldump from --input to --output.'
+  desc 'obfuscate', 'Obfuscate a mysqldump (with -c option) from --input to --output.'
   long_desc <<-DESC
     Obfuscate the database dump following the table definitions defined in the <profile>
     (defaults to `Strikefile`). The default obfuscate output is STDOUT and the input
     is STDIN.
 
-    The mysqldump must has been generated with the `-c` option.
+    IMPORTANT! The mysqldump must has been generated with the `-c` option.
 
     Usage example:
 
@@ -100,24 +90,27 @@ class Strike < Thor
     \x5\t  t.email         :email
     \x5\tend
   DESC
-  class_option :input,
-               aliases:   '-i',
-               type:      :string,
-               required:  false,
-               desc:      'Input file. If none is given, is read from STDIN.'
-
+  method_option :input,
+                aliases:   '-i',
+                type:      :string,
+                required:  false,
+                desc:      'Input file. If none is given, is read from STDIN.'
   def obfuscate
     with_profile do |profile|
       with_input do |input|
         with_output do |output|
-          tables = Interpreter.new.parse(profile.read)
-          Obfuscator.new.call(tables, input, output)
+          _obfuscate(profile, input, output)
         end
       end
     end
   end
 
   private
+
+  def _obfuscate(profile, input, output)
+    tables = Interpreter.new.parse(profile.read)
+    Obfuscator.new.call(tables, input, output)
+  end
 
   def with_input
     input = options[:input] ? File.open(options[:input]) : $stdin

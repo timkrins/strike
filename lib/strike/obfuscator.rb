@@ -4,8 +4,8 @@ require 'my_obfuscate'
 
 class Strike
   class Obfuscator
-    def initialize(adapter_source = nil)
-      @adapter_source = adapter_source
+    def initialize(config = {})
+      @adapter_source = config[:adapter_source]
     end
 
     def call(tables, input, output)
