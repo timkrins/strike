@@ -24,6 +24,12 @@ To generate a new dump, use the following command:
 
     $ strike dump mysql://root@localhost/db_production --profile=tables.rb > obfuscated_dump.sql
 
+To obfuscate an existing sql dump, use the following command:
+
+    $ cat original_dump.sql | strike obfuscate --profile=tables.rb > obfuscated_dump.sql
+
+It is very important to generate the mysql dump with the `-c` option.
+
 This command dumps the `database_url` following the tables defined in the `profile`
 file (defaults to `Strikefile`). The default dump output is STDOUT.
 
@@ -69,7 +75,6 @@ end
 
 * `mysqldump`: to create the dump to manipulate.
 * [my_obfuscate][my_obfuscate]: the core of this utility.
-* [Sequel][sequel]: extracts the info for the non defined tables.
 * [Thor][thor]: cli utilities.
 
 ## Notes
