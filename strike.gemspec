@@ -3,8 +3,8 @@
 Gem::Specification.new do |gem|
   gem.authors       = ['Juan Hernández']
   gem.email         = ['juan.hernandez@wuaki.tv']
-  gem.description   = %q{Dump a mysql database with sensitive data encrypted}
-  gem.summary       = %q{Dump a mysql database with sensitive data encrypted}
+  gem.description   = %q{Obfuscate a mysql dump database with sensitive data}
+  gem.summary       = %q{Dump and obfuscate a mysql database with sensitive data}
   gem.homepage      = 'https://github.com/wuakitv/strike'
 
   gem.files         = `git ls-files`.split($\)
