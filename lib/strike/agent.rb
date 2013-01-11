@@ -79,7 +79,7 @@ class Strike
     protected :run
 
     def obfuscate_data(input, output)
-      obfuscator = obfuscator_source.call(table_definitions)
+      obfuscator = obfuscator_source.call(@tables)
       obfuscator.globally_kept_columns = %w(id created_at updated_at)
 
       obfuscator.obfuscate(input, output)
@@ -89,18 +89,5 @@ class Strike
       @obfuscator_source ||= MyObfuscate.public_method(:new)
     end
     protected :obfuscator_source
-
-    def table_definitions
-      db_tables.reduce({}) do |acc, table|
-        acc[table] = @tables[table].call
-        acc
-      end
-    end
-    protected :table_definitions
-
-    def db_tables
-      @db.tables
-    end
-    protected :db_tables
   end
 end

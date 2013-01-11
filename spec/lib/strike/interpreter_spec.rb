@@ -5,12 +5,19 @@ require 'strike/interpreter'
 
 describe Strike::Interpreter do
 
+  let(:table_users) { { name: :keep } }
+  let(:table_movies) { :keep }
+
   let(:table_source) do
-    ->(&block) { block ? block.call(table_mock) : Object.new }
+    ->(&block) { block ? block.call(table_mock) : -> { table_movies } }
   end
 
+  let(:table_users) { {name: :keep } }
+
   let(:table_mock) do
-    MiniTest::Mock.new.expect(:name, true, [:first_name])
+    tb = MiniTest::Mock.new.expect(:call, table_users)
+
+    MiniTest::Mock.new.expect(:name, tb, [:first_name])
   end
 
   let(:profile) do
@@ -33,21 +40,21 @@ describe Strike::Interpreter do
     end
 
     it 'should parse tables with a block' do
-      tables[:users].wont_be_nil
+      tables[:users].must_equal table_users
       table_mock.verify
     end
 
     it 'should parse tables without a block' do
-      tables[:movies].wont_be_nil
+      tables[:movies].must_equal table_movies
     end
   end
 
   describe '#tables' do
-    it 'should have default tables' do
-      tables = subject.tables
+    let(:tables) { subject.tables }
 
-      tables[:test].call.must_equal :keep
-      tables[:test2].call.must_equal :keep
+    it 'should have default tables' do
+      tables[:test].must_equal :keep
+      tables[:test2].must_equal :keep
     end
   end
 end
