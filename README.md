@@ -66,8 +66,8 @@ def some_method
 end
 
 table :movies do |t|
-  t.title type: fixed, string: some_method
-  t.date  type: fixed, string: proc { |row| DateTime.now }
+  t.title type: :fixed, string: some_method
+  t.date  type: :fixed, string: proc { |row| DateTime.now }
 end
 ```
 
