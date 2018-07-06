@@ -14,7 +14,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
   gem.version       = IO.read(File.expand_path('../VERSION', __FILE__))
 
-  gem.add_runtime_dependency 'rake',         '~> 0.9'
-  gem.add_runtime_dependency 'my_obfuscate', '~> 0.3.7'
-  gem.add_runtime_dependency 'thor',         '~> 0.16.0'
+  gem.add_runtime_dependency 'rake',         '>= 0.9'
+  gem.add_runtime_dependency 'my_obfuscate', '>= 0.3.7'
+  gem.add_runtime_dependency 'thor',         '>= 0.16.0'
 end
