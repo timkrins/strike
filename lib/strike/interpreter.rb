@@ -23,9 +23,10 @@ class Strike
     # Define a table and its tables.
     #
     # @param [String, Symbol] name the name of the table.
+    # @param [Symbol] a my_obfuscate table level flag
     # @param [Proc] block the block to declare the definitions for the tables.
-    def table(name, &block)
-      table = table_source.call(&block)
+    def table(name, flag = nil, &block)
+      table = table_source.call(flag, &block)
 
       @tables[name.to_sym] = table.call
     end
