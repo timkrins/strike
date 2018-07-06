@@ -1,7 +1,7 @@
-# Strike [![Build Status](https://secure.travis-ci.org/wuakitv/strike.png)](http://travis-ci.org/wuakitv/strike)
+# Strike [![Build Status](https://secure.travis-ci.org/timkrins/strike.png)](http://travis-ci.org/timkrins/strike)
 
 Command line script to generate mysql dump with encrypted data.
-This is a wrapper arround the [my_obfuscate][my_obfuscate] gem.
+This is a wrapper around the [my_obfuscate][my_obfuscate] gem.
 
 ## Installation
 
@@ -82,7 +82,6 @@ end
 
 ## Notes
 
-* It is only 1.9 compliant.
 * Only supports `mysql`.
 
 ## Why that name?
