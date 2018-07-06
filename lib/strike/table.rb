@@ -2,15 +2,21 @@
 
 class Strike
   class Table
-    def initialize(&block)
-      @definition ||= {}
+    def initialize(flag = nil, &block)
+      @definition ||= flag || {}
       yield self if block_given?
     end
 
     def method_missing(method, *args, &block)
-      @definition[method] = block_given? ?  yield(self) : args.first
+      return super unless @definition.is_a?(Hash)
+
+      @definition[method] = block_given? ? yield(self) : args.first
 
       true
+    end
+
+    def respond_to_missing?(_method, _include_private)
+      @definition.is_a?(Hash)
     end
 
     def call

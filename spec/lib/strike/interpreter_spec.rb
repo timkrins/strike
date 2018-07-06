@@ -9,7 +9,7 @@ describe Strike::Interpreter do
   let(:table_movies) { :keep }
 
   let(:table_source) do
-    ->(&block) { block ? block.call(table_mock) : -> { table_movies } }
+    ->(flag, &block) { block ? block.call(table_mock) : -> { table_movies } }
   end
 
   let(:table_users) { {name: :keep } }

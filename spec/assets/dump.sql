@@ -16,6 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `audits`
+--
+
+DROP TABLE IF EXISTS `audits`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `audits` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `changes` text COLLATE utf8_unicode_ci,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `audits`
+--
+
+LOCK TABLES `audits` WRITE;
+/*!40000 ALTER TABLE `audits` DISABLE KEYS */;
+INSERT INTO `audits` (`id`, `changes`, `created_at`, `updated_at`) VALUES (1,"---\nname:\n- Before\n- After",'2010-10-20 13:40:20','2012-08-24 06:32:31');
+/*!40000 ALTER TABLE `audits` ENABLE KEYS */;
+
+--
 -- Table structure for table `devices`
 --
 
