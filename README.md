@@ -55,6 +55,9 @@ Example profile file:
 ```ruby
 # tables_definition.rb
 
+# create empty table
+table :audits, :truncate
+
 table :users do |t|
   # t.column_name :obfuscation_type
   t.name          :first_name
