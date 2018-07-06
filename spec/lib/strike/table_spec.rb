@@ -4,7 +4,7 @@ require_relative '../../minitest_helper'
 require 'strike/table'
 
 describe Strike::Table do
-  let(:hash) { { name: :test } }
+  let(:table_hash) { { name: :test } }
   let(:table) { Strike::Table.new }
 
   subject { table }
@@ -20,7 +20,7 @@ describe Strike::Table do
     before { subject.name(:test) }
 
     it 'should save method calls as hash' do
-      subject.to_hash.must_equal hash
+      subject.to_hash.must_equal table_hash
     end
   end
 
@@ -32,7 +32,7 @@ describe Strike::Table do
     end
 
     it 'should accept a block' do
-      subject.to_hash.must_equal hash
+      subject.to_hash.must_equal table_hash
     end
   end
 

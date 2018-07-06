@@ -2,7 +2,7 @@
 
 class Strike
   class Table
-    def initialize(flag, &block)
+    def initialize(flag = nil, &block)
       @definition ||= flag || {}
       yield self if block_given?
     end

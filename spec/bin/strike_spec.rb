@@ -13,9 +13,9 @@ describe Strike, 'Use of Strike in the cli' do
     it 'should obfuscate the sql dump' do
       out = capture_io { Strike.start(params) }.join('')
 
-      out.wont_match /Original name/
+      out.wont_match(/Original name/)
       # dump_profile.rb sets this string in each name
-      out.must_match /Obfuscated name/
+      out.must_match(/Obfuscated name/)
     end
   end
 end
